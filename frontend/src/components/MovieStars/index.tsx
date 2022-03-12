@@ -4,14 +4,49 @@ import { ReactComponent as StarEmpty } from 'assets/img/star-empty.svg'
 
 import './styles.css'
 
-export const MovieStar = () => {
+type Props = {
+  score: number
+}
+
+type StarProps = {
+  fill: number
+}
+
+function getFills(score: number) {
+  const fills = [0, 0, 0, 0, 0]
+
+  const integerPart = Math.floor(score)
+
+  for (let i = 0; i < integerPart; i++) fills[i] = 1
+
+  const diff = score - integerPart
+
+  if (diff > 0) fills[integerPart] = 0.5
+
+  return fills
+}
+
+const Star = ({ fill }: StarProps) => {
+  switch (fill) {
+    case 1:
+      return <StarFull />
+    case 0:
+      return <StarEmpty />
+    default:
+      return <StarHalf />
+  }
+}
+
+export const MovieStar = ({ score }: Props) => {
+  const fills = getFills(score)
+
   return (
     <div className="dsmovie-stars-container">
-      <StarFull />
-      <StarFull />
-      <StarFull />
-      <StarHalf />
-      <StarEmpty />
+      <Star fill={fills[0]} />
+      <Star fill={fills[1]} />
+      <Star fill={fills[2]} />
+      <Star fill={fills[3]} />
+      <Star fill={fills[4]} />
     </div>
   )
 }
